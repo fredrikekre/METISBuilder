@@ -1,0 +1,40 @@
+language: julia
+os:
+  - linux
+julia:
+  - 0.6
+notifications:
+  email: false
+git:
+  depth: 99999999
+cache:
+  timeout: 1000
+  directories:
+    - downloads
+env:
+  global:
+    - BINARYBUILDER_DOWNLOADS_CACHE=downloads
+    - BINARYBUILDER_AUTOMATIC_APPLE=false
+sudo: required
+
+# Before anything else, get the latest versions of things
+before_script:
+  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryProvider.jl")'
+  - julia -e 'Pkg.clone("https://github.com/JuliaPackaging/BinaryBuilder.jl"); Pkg.build()'
+
+script:
+  - julia build_tarballs.jl
+
+
+deploy:
+    provider: releases
+    api_key:
+        # Note; this api_key is only valid for fredrikekre/METISBuilder; you need
+        # to make your own: https://docs.travis-ci.com/user/deployment/releases/
+        secure: TARuHQ7tvojSM+qAKt5bBO6pJmyyXxj8biuHur9xM4b9sJFabV0vCUxJyqDGu8aGUZMboukD+TXXyY3g7VhxXZgTXbfq+zh2Mbxgz1Af6nxaxEQc1Eqn8xfs1JsTTGNe4obhG0l9F3grLfgWskYotAoLMsszAPCDkxHR8k9skaji6kKlFldFiNgSrX7vp8vqaqeW/+o6s8odCdP7uilkvB7NDCivrV56tr0JvMGIxhsz01Azf5mnwyEn2qx2QX44iNekfv2dkUayXieMUPnouBZknx45x17V51TvRvbkesgf+mAbrbL+IhSk9W9DHuVWXWRQW9hmljkiZ9wC/uH6xf/Cd7ltv46FiMDiRkpxxlprKqLSxVMki9mq5homTFNKINlQDowvFaPnFyzB8o9Z0A5mnqBqIH19FcC1zy1u1qjWe9W/dW1wlphQ1qzHrX/akw+93KM96DLEuNR3aLuO+5gjBceor23OJAds5km7JtXbF5vqsFZ22sp9VdSiZWWoPnGi2EMyDgKJCZPF6WKpTf03lXNIiZ5UuUt1gHEp8ZqlrYXUBM7APrrm7EQ6c1ldbMp0DOAZP1OJ4UY4TGvl4LjoU8wQzyKB7uy9wMgghxd2rSRBiSWA3qDnhIRRLGt0xNGw1qVsomB42LE/eeXXzbfqUduhgkXiRtC62O6oQ0s=
+    file_glob: true
+    file: products/*
+    skip_cleanup: true
+    on:
+        repo: fredrikekre/METISBuilder
+        tags: true
