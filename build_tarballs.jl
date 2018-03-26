@@ -11,11 +11,12 @@ sources = [
 script = raw"""
 cd $WORKSPACE/srcdir
 cd metis-5.1.0/
+
 make config prefix=$prefix shared=1
 make
 make install
-exit
 
+exit
 """
 
 # These are the platforms we will build for by default, unless further
@@ -36,7 +37,7 @@ products(prefix) = [
 
 # Dependencies that must be installed before this package can be built
 dependencies = [
-    
+
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
