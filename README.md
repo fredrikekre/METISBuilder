@@ -1,9 +1,10 @@
-# METISBuilder
+# METIS builder
 
-[![Build Status](https://travis-ci.org/fredrikekre/METISBuilder.svg?branch=master)](https://travis-ci.org/fredrikekre/METISBuilder)
+This repository builds binary artifacts for the METIS project.
+This repository has a default .travis.yml file that can be used to build
+binary artifacts on Travis CI. You will however need to setup the release
+upload manually. See https://docs.travis-ci.com/user/deployment/releases/.
 
-This repository builds binary artifacts for the metis project. Binary artifacts are automatically uploaded to
-[this repository's GitHub releases page](https://github.com/fredrikekre/METISBuilder/releases) whenever a tag is created
-on this repository.
-
-This repository was created using [BinaryBuilder.jl](https://github.com/JuliaPackaging/BinaryBuilder.jl)
+If you don't wish to use travis, you can use the build_tarballs.jl
+file manually and upload the resulting artifacts to a hosting provider
+of your choice.
