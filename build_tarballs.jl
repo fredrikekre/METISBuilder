@@ -15,9 +15,10 @@ sources = [
 # Bash recipe for building across all platforms
 script = raw"""
 cd $WORKSPACE/srcdir/metis-5.1.0/
-make config shared=1 prefix=$prefix
-make -j${nproc}
-make install
+mkdir -p build
+cd build/
+cmake $WORKSPACE/srcdir/metis-5.1.0/ -DCMAKE_VERBOSE_MAKEFILE=1 -DGKLIB_PATH=$WORKSPACE/srcdir/metis-5.1.0/GKlib -DCMAKE_INSTALL_PREFIX=$prefix -DSHARED=1 -DCMAKE_TOOLCHAIN_FILE=/opt/$target/$target.toolchain
+make -j${nproc} install
 
 """
 
@@ -33,6 +34,7 @@ platforms = [
     Linux(:x86_64, libc=:musl),
     Linux(:aarch64, libc=:musl),
     Linux(:armv7l, libc=:musl, call_abi=:eabihf),
+    MacOS(:x86_64),
     FreeBSD(:x86_64)
 ]
 
@@ -43,7 +45,7 @@ products(prefix) = [
 
 # Dependencies that must be installed before this package can be built
 dependencies = [
-    
+
 ]
 
 # Build the tarballs, and possibly a `build.jl` as well.
